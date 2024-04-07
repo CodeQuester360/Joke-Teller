@@ -1,6 +1,3 @@
-const button = document.getElementById("button");
-const audioElement = document.getElementById("audio");
-
 //VoiceRSS JavaScript SDK
 
 const VoiceRSS = {
@@ -109,49 +106,3 @@ const VoiceRSS = {
     throw "The browser does not support HTTP request";
   },
 };
-// Disable/Enable function
-function toggleButton() {
-  button.disabled = !button.disabled;
-}
-
-// Passing Joke to VoiceRSS API
-function tellMe(joke) {
-  console.log("tell me: ", joke);
-  VoiceRSS.speech({
-    key: "e25f04f885d141cdb3758c52077d2b15",
-    src: joke,
-    hl: "en-us",
-    v: "Linda",
-    r: 0,
-    c: "mp3",
-    f: "44khz_16bit_stereo",
-    ssml: false,
-  });
-}
-
-// Get Jokes from API
-async function getJokes() {
-  let joke = "";
-  const apiUrl =
-    "https://v2.jokeapi.dev/joke/Programming?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&type=single";
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    if (data.setup) {
-      joke = `${data.setup} ... ${data.delivery}`;
-    } else {
-      joke = data.joke;
-    }
-    //Text-to-Speech
-    tellMe(joke);
-    // Disable Button
-    toggleButton();
-  } catch (error) {
-    console.log("whoops", error);
-  }
-}
-
-// Event Listeners
-
-button.addEventListener("click", getJokes);
-audioElement.addEventListener("ended", toggleButton);
